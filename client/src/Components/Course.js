@@ -3,9 +3,9 @@ import React from 'react';
 const Course = (props) => {
   return (
     <li>
-      <img src={props.title}/>
+      {props.data} 
     </li>
   );
 }
 
-export default Photo;
+export default Course;

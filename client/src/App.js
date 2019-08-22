@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
-import config from './config';
+//import logo from './logo.svg';
+//import config from './config';
 import './App.css';
-import CourseList from './CourseList';
+import CourseList from './Components/CourseList';
 
 class App extends Component {
   constructor(){

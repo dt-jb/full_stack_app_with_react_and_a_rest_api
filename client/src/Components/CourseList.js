@@ -1,5 +1,5 @@
 import React from 'react';
-//import Course from './Course';
+import Course from './Course';
 
 const CourseList = props => {
   const results = props.data;
@@ -7,7 +7,8 @@ const CourseList = props => {
   let courses;
 
   if(results.length > 0){
-    courses = results.map( course => <li>{course.title}</li>);
+    courses = results.map( course => <Course data={course.title} key={course.id} />);
+    //courses = results.map( course => <li>{course.title} key={course.id}</li>);
 
   } else {
     console.log('Sorry, nothing is here dude');
