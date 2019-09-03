@@ -52,12 +52,13 @@ class UpdateCourse extends Component {
                          name="title" type="text"
                          className="input-title course--title--input"
                          placeholder="Course title..."
-                         defaultValue={this.state.courseDetail.title} />
+                         defaultValue={this.state.courseDetail.title}
+                         onChange={this.change} />
                 </div>
                 <p>By Joe Smith</p>
               </div>
               <div className="course--description">
-                <div><textarea id="description" name="description" className="" defaultValue={this.state.courseDetail.description}></textarea></div>
+                <div><textarea id="description" name="description" className="" defaultValue={this.state.courseDetail.description} onChange={this.change} ></textarea></div>
               </div>
             </div>
             <div className="grid-25 grid-right">
@@ -66,11 +67,11 @@ class UpdateCourse extends Component {
                   <li className="course--stats--list--item">
                     <h4>Estimated Time</h4>
                     <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input"
-                        placeholder="Hours" defaultValue={this.state.courseDetail.estimatedTime}/></div>
+                        placeholder="Hours" defaultValue={this.state.courseDetail.estimatedTime} onChange={this.change} /></div>
                   </li>
                   <li className="course--stats--list--item">
                     <h4>Materials Needed</h4>
-                    <div><textarea id="materialsNeeded" name="materialsNeeded" className="" value={this.state.courseDetail.materialsNeeded}></textarea>
+                    <div><textarea id="materialsNeeded" name="materialsNeeded" className="" defaultValue={this.state.courseDetail.materialsNeeded} onChange={this.change} ></textarea>
                     </div>
                   </li>
                 </ul>
@@ -85,6 +86,18 @@ class UpdateCourse extends Component {
       </div>
     );
   }
+
+  change = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState(() => {
+      return {
+        [name]: value
+      };
+    });
+  }
+
 }
 
 export default UpdateCourse;
