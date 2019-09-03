@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Course from './Course';
+//import Course from './Course';
 
 class Courses extends Component {
   constructor(){
@@ -37,7 +37,7 @@ class Courses extends Component {
       courses = results.map( course => {
         return  <React.Fragment key={course.id}>
             <div className="grid-33">
-              <Link className="course--module course--link" id={course.id} to={`/courses/${course.id}/update`}>
+              <Link className="course--module course--link" id={course.id} to={`/courses/${course.id}`}>
                 <h4 className="course--label">Course</h4>
                 <h3 className="course--title">{course.title}</h3>
               </Link>

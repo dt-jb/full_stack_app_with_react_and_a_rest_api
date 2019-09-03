@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-//import Course from './Course';
+//import UpdateCourse from './UpdateCourse';
 
 /*const CourseDetail = props => {
   const results = props.data;
@@ -46,8 +46,17 @@ class CourseDetail extends Component {
       <div>
         <div className="actions--bar">
           <div className="bounds">
-            <div className="grid-100"><span><a className="button" href="update-course.html">Update Course</a><a className="button" href="#">Delete Course</a></span><a
-                className="button button-secondary" href="index.html">Return to List</a></div>
+            <div className="grid-100"><span>
+              {/*<Link className="button"
+                    to={`/courses/${this.state.courseDetail.id}/update`}>Update Course</Link>*/}
+              <Link className="button"
+                          to={`/courses/${this.state.courseDetail.id}/update`}
+                          props={this.state.courseDetail}>Update Course</Link>
+              <Link className="button"
+                    to="#">Delete Course</Link></span>
+              <Link className="button button-secondary"
+                    to={`/`}>Return to List</Link>
+            </div>
           </div>
         </div>
         <div className="bounds course--detail">
@@ -55,7 +64,7 @@ class CourseDetail extends Component {
             <div className="course--header">
               <h4 className="course--label">Course</h4>
               <h3 className="course--title">{this.state.courseDetail.title}</h3>
-              <p>By Joe Smith</p>
+              <p>By User #{`${this.state.courseDetail.userId}`}</p>
             </div>
             <div className="course--description">
               <p>{this.state.courseDetail.description}</p>
