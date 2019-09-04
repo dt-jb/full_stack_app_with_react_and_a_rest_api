@@ -7,7 +7,8 @@ const Context = React.createContext();
 export class Provider extends Component {
 
   state = {
-    authenticatedUser: Cookies.getJSON('authenticatedUser') || null
+    authenticatedUser: Cookies.getJSON('authenticatedUser') || null,
+    authenticatedUserPW: Cookies.getJSON('authenticatedUserPW') || null
   };
 
   constructor() {
@@ -16,10 +17,11 @@ export class Provider extends Component {
   }
 
   render() {
-    const { authenticatedUser } = this.state;
+    const { authenticatedUser, authenticatedUserPW } = this.state;
 
     const value = {
       authenticatedUser,
+      authenticatedUserPW,
       data: this.data,
       actions: {
         signIn: this.signIn,
@@ -41,10 +43,12 @@ export class Provider extends Component {
       this.setState(() => {
         return {
           authenticatedUser: user,
+          authenticatedUserPW: password
         };
       });
       // Set cookie
       Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 });
+      Cookies.set('authenticatedUserPW', JSON.stringify(password), { expires: 1 });
     }
     return user;
   }

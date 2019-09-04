@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class UpdateCourse extends Component {
@@ -16,8 +16,8 @@ class UpdateCourse extends Component {
   }
 
   //data fetching
-  getCourseDetail = (id) => {
-    axios.get(`http://localhost:5000/api/courses/${id}`)
+  getCourseDetail = async (id) => {
+    await axios.get(`http://localhost:5000/api/courses/${id}`)
       .then(response => {
         this.setState({
           courseDetail: response.data
@@ -26,13 +26,25 @@ class UpdateCourse extends Component {
       .catch(error => console.log('Error fetching data', error));
   }
 
-  //data fetching
+  //data posting/updatingß
   submitUpdatedCourse = (id) => {
-    axios.put(`http://localhost:5000/api/courses/${id}/update`)
+    axios.put(`http://localhost:5000/api/courses/${id}/update`, this.state.courseDetail)
       .then(response => {
-        this.setState({
+        console.log(response);
+        if (response.status === 201) {
+          return [];
+        }
+        else if (response.status === 400) {
+          return response.json().then(data => {
+            return data.errors;
+          });
+        }
+        else {
+          throw new Error();
+        }
+        /*this.setState({
           courseDetail: response.data
-        });
+        });*/
       })
       .catch(error => console.log('Error fetching data', error));
   }
@@ -89,13 +101,16 @@ class UpdateCourse extends Component {
 
   change = (event) => {
     const name = event.target.name;
+    //console.log(name);
     const value = event.target.value;
 
     this.setState(() => {
       return {
-        [name]: value
+        courseDetail:
+          {[name]: value}
       };
     });
+    console.log(this.state.courseDetail);
   }
 
 }
