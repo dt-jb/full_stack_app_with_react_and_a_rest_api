@@ -54,6 +54,7 @@ router.get('/users', authenticateUser, (req, res) => {
   res.status(200).json({
     name: req.currentUser.firstName ,
     username: req.currentUser.emailAddress,
+    id: req.currentUser.id
   });
 });
 

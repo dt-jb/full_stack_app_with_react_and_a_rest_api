@@ -19,7 +19,7 @@ class CreateCourse extends Component {
   }
 */
   render(){
- 
+
     const {
       title,
       description,
@@ -124,7 +124,8 @@ class CreateCourse extends Component {
     const { context } = this.props;
     const authUser = context.authenticatedUser.username;
     const authUserPW = context.authenticatedUserPW;
-    //console.log(context.authenticatedUser.username, context.authenticatedUserPW);
+    const userId = context.authenticatedUserId;
+    //console.log(context.authenticatedUser);
     const {
       title,
       description,
@@ -133,11 +134,11 @@ class CreateCourse extends Component {
     } = this.state;
 
     const course = {
-      id,
       title,
       description,
       estimatedTime,
       materialsNeeded,
+      userId,
     };
     console.log(course);
 

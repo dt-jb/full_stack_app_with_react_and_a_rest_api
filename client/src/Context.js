@@ -16,11 +16,12 @@ export class Provider extends Component {
   }
 
   render() {
-    const { authenticatedUser, authenticatedUserPW } = this.state;
+    const { authenticatedUser, authenticatedUserPW, authenticatedUserId } = this.state;
 
     const value = {
       authenticatedUser,
       authenticatedUserPW,
+      authenticatedUserId,
       data: this.data,
       actions: {
         signIn: this.signIn,
@@ -42,7 +43,8 @@ export class Provider extends Component {
       this.setState(() => {
         return {
           authenticatedUser: user,
-          authenticatedUserPW: password
+          authenticatedUserPW: password,
+          authenticatedUserId: user.id
         };
       });
       // Set cookie
