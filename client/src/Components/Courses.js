@@ -29,7 +29,7 @@ class Courses extends Component {
   render(){
 
     const results = this.state.courses;
-    console.log(results);
+    //console.log(results);
     let courses;
 
     if(results.length > 0) {
@@ -46,7 +46,7 @@ class Courses extends Component {
       });
 
     } else {
-      console.log("Sorry, nothing is here dude");
+      //console.log("Sorry, nothing is here dude");
     }
 
     return (

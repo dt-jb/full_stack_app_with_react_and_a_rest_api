@@ -75,7 +75,7 @@ export default class UserSignIn extends Component {
           });
         } else {
            this.props.history.push('/');
-           console.log(`Welcome, ${user}!`);
+           //console.log(`Welcome, ${user}!`);
         }
       })
       .catch( err => {

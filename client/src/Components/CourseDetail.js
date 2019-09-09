@@ -1,29 +1,48 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-//import UpdateCourse from './UpdateCourse';
-
-/*const CourseDetail = props => {
-  const results = props.data;
-  console.log(results);
-  let courses;
-
-  if(results.length > 0){
-    courses = results.map( course => <Course data={course.title} key={course.id} />);
-    //courses = results.map( course => <li>{course.title} key={course.id}</li>);
-
-  } else {
-    console.log('Sorry, nothing is here dude');
-  }*/
 
 class CourseDetail extends Component {
 
+  state = {
+    id: '',
+    title: '',
+    description: '',
+    estimatedTime: '',
+    materialsNeeded: '',
+    userId: '',
+    errors: [],
+  };
+
+  componentDidMount(){
+    this.getCourseDetail(this.props.match.params.id);
+  }
+
+  //data fetching
+  getCourseDetail = async (id) => {
+    await axios.get(`http://localhost:5000/api/courses/${id}`)
+      .then(response => {
+        this.setState({
+          id: response.data.id,
+          title: response.data.title,
+          description: response.data.description,
+          estimatedTime: response.data.estimatedTime,
+          materialsNeeded: response.data.materialsNeeded,
+          userId: response.data.userId,
+        });
+        console.log(this.state.id);
+      })
+      .catch(error => console.log('Error fetching data', error));
+  }
+  /*
   constructor(){
     super();
     this.state = {
       courseDetail: {}
     };
   }
+
+  //const courseId = this.props.match.params.id;
 
   componentDidMount(){
     this.getCourseDetail(this.props.match.params.id);
@@ -40,8 +59,32 @@ class CourseDetail extends Component {
       .catch(error => console.log('Error fetching data', error));
   }
 
+  handleDelete = (id) => {
+    axios.delete(`http://localhost:5000/api/courses/${id}`)
+      .then(errors => {
+        if (errors.length) {
+          this.setState({ errors });
+        } else {
+             this.props.history.push('/');
+        }
+      })
+      .catch(error => console.log('Error fetching data', error));
+  }
+  //add context (CourseDetailwithContext) and use authenticatedUser from context below render method to handleCancel. Maybe put the handle cancel in Data.js
+*/
   render(){
-    console.log(this.state.courseDetail);
+    //console.log(this.state.courseDetail);
+    const {
+      id,
+      title,
+      description,
+      estimatedTime,
+      materialsNeeded,
+      userId,
+    } = this.state;
+    //console.log(`${this.state.title, this.state.description} these are not undef`);
+    const errors = [];
+
     return (
       <div>
         <div className="actions--bar">
@@ -50,10 +93,10 @@ class CourseDetail extends Component {
               {/*<Link className="button"
                     to={`/courses/${this.state.courseDetail.id}/update`}>Update Course</Link>*/}
               <Link className="button"
-                          to={`/courses/${this.state.courseDetail.id}/update`}
-                          props={this.state.courseDetail}>Update Course</Link>
-              <Link className="button"
-                    to="#">Delete Course</Link></span>
+                          to={`/courses/${id}/update`}
+                          props={this.state}>Update Course</Link>
+              <button className="button"
+                    onClick={this.delete}>Delete Course</button></span>
               <Link className="button button-secondary"
                     to={`/`}>Return to List</Link>
             </div>
@@ -63,11 +106,11 @@ class CourseDetail extends Component {
           <div className="grid-66">
             <div className="course--header">
               <h4 className="course--label">Course</h4>
-              <h3 className="course--title">{this.state.courseDetail.title}</h3>
-              <p>By User #{`${this.state.courseDetail.userId}`}</p>
+              <h3 className="course--title">{title}</h3>
+              <p>By User #{`${userId}`}</p>
             </div>
             <div className="course--description">
-              <p>{this.state.courseDetail.description}</p>
+              <p>{description}</p>
             </div>
           </div>
           <div className="grid-25 grid-right">
@@ -75,7 +118,7 @@ class CourseDetail extends Component {
               <ul className="course--stats--list">
                 <li className="course--stats--list--item">
                   <h4>Estimated Time</h4>
-                  <h3>{this.state.courseDetail.estimatedTime}</h3>
+                  <h3>{estimatedTime}</h3>
                 </li>
                 <li className="course--stats--list--item">
                   <h4>Materials Needed</h4>
@@ -99,6 +142,54 @@ class CourseDetail extends Component {
       </div>
     );
   }
+
+  delete = () => {
+
+    const { context } = this.props;
+    const authUser = context.authenticatedUser.username;
+    const authUserPW = context.authenticatedUserPW;
+    const userId = context.authenticatedUserId;
+    //console.log(courseId);
+
+    const { id } = this.state;
+    /*const {
+      id,
+      title,
+      description,
+      estimatedTime,
+      materialsNeeded,
+    } = this.state;
+    //const courseId = this.state.id;
+    console.log(id, authUser, authUserPW);
+/*
+    const updatedCourse = {
+      id,
+      title,
+      description,
+      estimatedTime,
+      materialsNeeded,
+      userId,
+    };
+    */
+
+    context.data.deleteCourse(id, authUser, authUserPW)
+      .then( errors => {
+         if (errors.length) {
+           this.setState({ errors });
+         } else {
+              //console.log('This shouldve worked- check the database!');
+              this.props.history.push(`/`);
+         }
+       })
+      .catch( err => { // handle rejected promises
+          //console.log(err);
+          this.props.history.push('/error');
+     });
+  }
+  /*
+  cancel = () => {
+    this.props.history.push('/');
+  }*/
 }
 
 export default CourseDetail;
