@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-//import axios from 'axios';
 import {
   BrowserRouter as Router,
   Route,
   Switch
 } from 'react-router-dom';
-//import logo from './logo.svg';
-//import config from './config';
+
 import './styles/global.css';
 import Header from './Components/Header';
 import Courses from './Components/Courses';
@@ -30,7 +28,6 @@ const UserSignOutWithContext = withContext(UserSignOut);
 const CourseDetailWithContext = withContext(CourseDetail);
 const CreateCourseWithContext = withContext(CreateCourse);
 const UpdateCourseWithContext = withContext(UpdateCourse);
-//change^^ to const CourseDetailWithContext = withContext(CourseDetail);
 
 class App extends Component {
 

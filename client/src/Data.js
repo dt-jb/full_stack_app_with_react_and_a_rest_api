@@ -17,7 +17,6 @@ export default class Data {
 
     // Check if auth is required
     if (requiresAuth) {
-        //console.log(`${credentials.username}:${credentials.password}`);
         const encodedCredentials = btoa(`${credentials.username}:${credentials.password}`);
         options.headers['Authorization'] = `Basic ${encodedCredentials}`;
     }
@@ -25,6 +24,7 @@ export default class Data {
     return fetch(url, options);
   }
 
+// Get current user
   async getUser(username, password) {
     const response = await this.api(`/users`, 'GET', null, true, { username, password });
     if (response.status === 200) {
@@ -38,6 +38,7 @@ export default class Data {
     }
   }
 
+// Creates or adds a new user
   async createUser(user) {
     const response = await this.api('/users', 'POST', user);
     if (response.status === 201) {
@@ -55,6 +56,7 @@ export default class Data {
     }
   }
 
+// Creates a new course
   async createCourse(course, username, password) {
     const response = await this.api('/courses', 'POST', course, true, { username, password });
     if (response.status === 201) {
@@ -73,6 +75,7 @@ export default class Data {
     }
   }
 
+// Updates course
   async updateCourse(course, id, username, password) {
     const response = await this.api(`/courses/${id}`, 'PUT', course, true, { username, password });
     if (response.status === 204) {
@@ -90,6 +93,7 @@ export default class Data {
     }
   }
 
+// Delete course
   async deleteCourse(id, username, password) {
     const response = await this.api(`/courses/${id}`, 'DELETE', null, true, { username, password });
     if (response.status === 204) {

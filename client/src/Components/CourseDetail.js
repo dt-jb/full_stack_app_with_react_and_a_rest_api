@@ -38,46 +38,9 @@ class CourseDetail extends Component {
         console.log('Error fetching data', error)
       });
   }
-  /*
-  constructor(){
-    super();
-    this.state = {
-      courseDetail: {}
-    };
-  }
 
-  //const courseId = this.props.match.params.id;
-
-  componentDidMount(){
-    this.getCourseDetail(this.props.match.params.id);
-  }
-
-  //data fetching
-  getCourseDetail = (id) => {
-    axios.get(`http://localhost:5000/api/courses/${id}`)
-      .then(response => {
-        this.setState({
-          courseDetail: response.data
-        });
-      })
-      .catch(error => console.log('Error fetching data', error));
-  }
-
-  handleDelete = (id) => {
-    axios.delete(`http://localhost:5000/api/courses/${id}`)
-      .then(errors => {
-        if (errors.length) {
-          this.setState({ errors });
-        } else {
-             this.props.history.push('/');
-        }
-      })
-      .catch(error => console.log('Error fetching data', error));
-  }
-  //add context (CourseDetailwithContext) and use authenticatedUser from context below render method to handleCancel. Maybe put the handle cancel in Data.js
-*/
   render(){
-    //console.log(this.state.courseDetail);
+
     const {
       id,
       title,
@@ -91,8 +54,6 @@ class CourseDetail extends Component {
     const authUserId = context.authenticatedUserId;
     //console.log(`${this.state.title, this.state.description} these are not undef`);
     const errors = [];
-
-    //console.log(authUserId, this.state.userId);
 
     return (
       <div>
@@ -163,25 +124,6 @@ class CourseDetail extends Component {
     //console.log(courseId);
 
     const { id } = this.state;
-    /*const {
-      id,
-      title,
-      description,
-      estimatedTime,
-      materialsNeeded,
-    } = this.state;
-    //const courseId = this.state.id;
-    console.log(id, authUser, authUserPW);
-/*
-    const updatedCourse = {
-      id,
-      title,
-      description,
-      estimatedTime,
-      materialsNeeded,
-      userId,
-    };
-    */
 
     context.data.deleteCourse(id, authUser, authUserPW)
       .then( errors => {
@@ -197,10 +139,6 @@ class CourseDetail extends Component {
           this.props.history.push('/error');
      });
   }
-  /*
-  cancel = () => {
-    this.props.history.push('/');
-  }*/
 }
 
 export default CourseDetail;

@@ -17,12 +17,6 @@ class UpdateCourse extends Component {
 
   componentDidMount(){
     this.getCourseDetail(this.props.match.params.id);
-    const { context } = this.props;
-    const authUserId = context.authenticatedUserId;
-    if(authUserId !== this.state.userId){
-      console.log(`authUserId: ${authUserId}, userId: ${this.state.userId}`);
-      this.props.history.push('/forbidden');
-    }
   }
 
   //data fetching
@@ -37,7 +31,7 @@ class UpdateCourse extends Component {
           materialsNeeded: response.data.materialsNeeded,
           userId: response.data.userId,
         });
-        //console.log(response);
+        console.log(response.data.userId);
       })
       .catch(error => {
         this.props.history.push('/notfound');
@@ -45,45 +39,7 @@ class UpdateCourse extends Component {
       });
   }
 
-  //data posting/updatingß
-  submitUpdatedCourse = (id) => {
-    const {
-      title,
-      description,
-      estimatedTime,
-      materialsNeeded,
-      userId,
-    } = this.state;
-
-    const updatedCourse = {
-      id,
-      title,
-      description,
-      estimatedTime,
-      materialsNeeded,
-      userId,
-    };
-    //console.log(updatedCourse);
-    axios.put(`http://localhost:5000/api/courses/${id}/update`, updatedCourse)
-      .then(response => {
-        //console.log(response);
-        if (response.status === 201) {
-          return [];
-        }
-        else if (response.status === 400) {
-          return response.json().then(data => {
-            return data.errors;
-          });
-        }
-        else {
-          throw new Error();
-        }
-      })
-      .catch(error => console.log('Error fetching data', error));
-  }
-
   render(){
-    //console.log(this.state.courseDetail);
 
     const {
       title,
@@ -91,7 +47,7 @@ class UpdateCourse extends Component {
       estimatedTime,
       materialsNeeded,
     } = this.state;
-    //console.log(`${this.state.title, this.state.description} these are not undef`);
+
     const errors = [];
 
     return (
@@ -170,8 +126,6 @@ class UpdateCourse extends Component {
 
     this.setState(() => {
       return {
-        /*courseDetail:
-          {[name]: value}*/
           [name]: value
       };
     });
@@ -182,8 +136,15 @@ class UpdateCourse extends Component {
     const { context } = this.props;
     const authUser = context.authenticatedUser.username;
     const authUserPW = context.authenticatedUserPW;
-    const userId = context.authenticatedUserId;
-    //const id = this.props.match.params.id;
+    //const userId = context.authenticatedUserId;
+    const authUserId = context.authenticatedUserId;
+    //const { context } = this.props;
+    //const authUserId = context.authenticatedUserId;
+    const { userId } = this.state;
+    if(authUserId !== userId){
+      console.log(`authUserId: ${authUserId}, userId: ${userId}`);
+      this.props.history.push('/forbidden');
+    }
 
     const {
       id,
@@ -202,19 +163,15 @@ class UpdateCourse extends Component {
       userId,
     };
 
-    console.log(updatedCourse);
-
     context.data.updateCourse(updatedCourse, id, authUser, authUserPW)
       .then( errors => {
          if (errors.length) {
            this.setState({ errors });
          } else {
-              //console.log('This shouldve worked- check the database!');
               this.props.history.push(`/courses/${id}`);
          }
        })
       .catch( err => { // handle rejected promises
-          //console.log(err);
           this.props.history.push('/error');
      });
   }
