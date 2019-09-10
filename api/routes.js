@@ -52,7 +52,8 @@ const authenticateUser = async (req, res, next) => {
 router.get('/users', authenticateUser, (req, res) => {
   //console.log(req.currentUser)
   res.status(200).json({
-    name: req.currentUser.firstName ,
+    name: req.currentUser.firstName,
+    //lastName: req.currentUser.firstName
     username: req.currentUser.emailAddress,
     id: req.currentUser.id
   });

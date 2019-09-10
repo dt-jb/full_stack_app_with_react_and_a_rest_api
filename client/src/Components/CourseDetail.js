@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 
 class CourseDetail extends Component {
@@ -32,7 +33,10 @@ class CourseDetail extends Component {
         });
         console.log(this.state.id);
       })
-      .catch(error => console.log('Error fetching data', error));
+      .catch(error => {
+        this.props.history.push('/notfound');
+        console.log('Error fetching data', error)
+      });
   }
   /*
   constructor(){
@@ -82,23 +86,26 @@ class CourseDetail extends Component {
       materialsNeeded,
       userId,
     } = this.state;
+
+    const { context } = this.props;
+    const authUserId = context.authenticatedUserId;
     //console.log(`${this.state.title, this.state.description} these are not undef`);
     const errors = [];
+
+    //console.log(authUserId, this.state.userId);
 
     return (
       <div>
         <div className="actions--bar">
           <div className="bounds">
-            <div className="grid-100"><span>
-              {/*<Link className="button"
-                    to={`/courses/${this.state.courseDetail.id}/update`}>Update Course</Link>*/}
-              <Link className="button"
-                          to={`/courses/${id}/update`}
-                          props={this.state}>Update Course</Link>
-              <button className="button"
-                    onClick={this.delete}>Delete Course</button></span>
-              <Link className="button button-secondary"
-                    to={`/`}>Return to List</Link>
+            <div className="grid-100">
+              { (authUserId  && context.authenticatedUserId === this.state.userId) ? (
+                <span>
+                  <Link className="button" to={`/courses/${id}/update`} props={this.state}>Update Course</Link>
+                  <button className="button" onClick={this.delete}>Delete Course</button>
+                </span>
+              ) : ("")}
+              <Link className="button button-secondary" to={`/`}>Return to List</Link>
             </div>
           </div>
         </div>
@@ -110,7 +117,7 @@ class CourseDetail extends Component {
               <p>By User #{`${userId}`}</p>
             </div>
             <div className="course--description">
-              <p>{description}</p>
+              <ReactMarkdown source={description} />
             </div>
           </div>
           <div className="grid-25 grid-right">
@@ -122,6 +129,10 @@ class CourseDetail extends Component {
                 </li>
                 <li className="course--stats--list--item">
                   <h4>Materials Needed</h4>
+                    <ul>
+                      <ReactMarkdown source={materialsNeeded}/>
+                    </ul>
+                  {/*
                   <ul>
                     <li>1/2 x 3/4 inch parting strip</li>
                     <li>1 x 2 common pine</li>
@@ -133,7 +144,7 @@ class CourseDetail extends Component {
                     <li>Wood Glue</li>
                     <li>Wood Filler</li>
                     <li>Minwax Oil Based Polyurethane</li>
-                  </ul>
+                  </ul>*/}
                 </li>
               </ul>
             </div>

@@ -45,7 +45,9 @@ export default class Data {
     }
     else if (response.status === 400) {
       return response.json().then(data => {
-        return data.errors;
+        const errors = [];
+        data.errors.map((error) => errors.push(error.message));
+        return errors;
       });
     }
     else {
@@ -60,7 +62,10 @@ export default class Data {
     }
     else if (response.status === 400) {
       return response.json().then(data => {
-        return data.errors;
+        //console.log(data.errors);
+        const errors = [];
+        data.errors.map((error) => errors.push(error.message));
+        return errors;
       });
     }
     else {
@@ -75,7 +80,9 @@ export default class Data {
     }
     else if (response.status === 400) {
       return response.json().then(data => {
-        return data.errors;
+        const errors = [];
+        data.errors.map((error) => errors.push(error.message));
+        return errors
       });
     }
     else {

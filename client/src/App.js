@@ -16,6 +16,9 @@ import UpdateCourse from './Components/UpdateCourse';
 import UserSignUp from './Components/UserSignUp';
 import UserSignIn from './Components/UserSignIn';
 import UserSignOut from './Components/UserSignOut';
+import NotFound from './Components/NotFound';
+import Forbidden from './Components/Forbidden';
+import Error from './Components/Error';
 
 import withContext from './Context';
 import PrivateRoute from './PrivateRoute';
@@ -44,6 +47,9 @@ class App extends Component {
             <Route path="/signin" component={UserSignInWithContext} />
             <Route path="/signup" component={UserSignUpWithContext} />
             <Route path="/signout" component={UserSignOutWithContext} />
+            <Route path="/error" component={Error} />
+            <Route path="/forbidden" component={Forbidden} />
+            <Route component={NotFound} />
           </Switch>
 
 

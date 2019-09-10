@@ -49,7 +49,7 @@ export class Provider extends Component {
       });
       // Set cookie
       Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 });
-      Cookies.set('authenticatedUserPW', JSON.stringify(password), { expires: 1 });
+      //Cookies.set('authenticatedUserPW', JSON.stringify(password), { expires: 1 });
     }
     return user;
   }
