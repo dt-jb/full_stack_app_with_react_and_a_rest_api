@@ -19,7 +19,7 @@ class CourseDetail extends Component {
     this.getCourseDetail(this.props.match.params.id);
   }
 
-  //data fetching
+  //initial data fetching for course buttons
   getCourseDetail = async (id) => {
     await axios.get(`http://localhost:5000/api/courses/${id}`)
       .then(response => {
@@ -31,11 +31,9 @@ class CourseDetail extends Component {
           materialsNeeded: response.data.materialsNeeded,
           userId: response.data.userId,
         });
-        console.log(this.state.id);
       })
       .catch(error => {
         this.props.history.push('/notfound');
-        console.log('Error fetching data', error)
       });
   }
 
@@ -51,16 +49,23 @@ class CourseDetail extends Component {
     } = this.state;
 
     const { context } = this.props;
-    const authUserId = context.authenticatedUserId;
-    //console.log(`${this.state.title, this.state.description} these are not undef`);
-    const errors = [];
+    let authUserId = 0;
+
+    if(context.authenticatedUser) {
+      authUserId = context.authenticatedUser.id;
+    }
+    else {
+      authUserId = 0;
+    }
+    console.log(`authUserId: ${authUserId}`);
+    //const errors = [];
 
     return (
       <div>
         <div className="actions--bar">
           <div className="bounds">
             <div className="grid-100">
-              { (authUserId  && context.authenticatedUserId === this.state.userId) ? (
+              { (/*authUserId  && context.authenticatedUser.id*/authUserId === this.state.userId) ? (
                 <span>
                   <Link className="button" to={`/courses/${id}/update`} props={this.state}>Update Course</Link>
                   <button className="button" onClick={this.delete}>Delete Course</button>
@@ -93,19 +98,6 @@ class CourseDetail extends Component {
                     <ul>
                       <ReactMarkdown source={materialsNeeded}/>
                     </ul>
-                  {/*
-                  <ul>
-                    <li>1/2 x 3/4 inch parting strip</li>
-                    <li>1 x 2 common pine</li>
-                    <li>1 x 4 common pine</li>
-                    <li>1 x 10 common pine</li>
-                    <li>1/4 inch thick lauan plywood</li>
-                    <li>Finishing Nails</li>
-                    <li>Sandpaper</li>
-                    <li>Wood Glue</li>
-                    <li>Wood Filler</li>
-                    <li>Minwax Oil Based Polyurethane</li>
-                  </ul>*/}
                 </li>
               </ul>
             </div>
@@ -115,13 +107,12 @@ class CourseDetail extends Component {
     );
   }
 
+//Deletes course from database
   delete = () => {
-
     const { context } = this.props;
     const authUser = context.authenticatedUser.username;
-    const authUserPW = context.authenticatedUserPW;
-    const userId = context.authenticatedUserId;
-    //console.log(courseId);
+    const authUserPW = context.authenticatedUser.password;
+    //const userId = context.authenticatedUser.id;
 
     const { id } = this.state;
 
@@ -130,12 +121,10 @@ class CourseDetail extends Component {
          if (errors.length) {
            this.setState({ errors });
          } else {
-              //console.log('This shouldve worked- check the database!');
-              this.props.history.push(`/`);
+            this.props.history.push(`/`);
          }
        })
       .catch( err => { // handle rejected promises
-          //console.log(err);
           this.props.history.push('/error');
      });
   }

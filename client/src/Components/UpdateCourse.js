@@ -19,7 +19,7 @@ class UpdateCourse extends Component {
     this.getCourseDetail(this.props.match.params.id);
   }
 
-  //data fetching
+  //data fetching - gets course information and sets the state accordingly
   getCourseDetail = async (id) => {
     await axios.get(`http://localhost:5000/api/courses/${id}`)
       .then(response => {
@@ -31,11 +31,9 @@ class UpdateCourse extends Component {
           materialsNeeded: response.data.materialsNeeded,
           userId: response.data.userId,
         });
-        console.log(response.data.userId);
       })
       .catch(error => {
         this.props.history.push('/notfound');
-        console.log('Error fetching data', error)
       });
   }
 
@@ -95,7 +93,7 @@ class UpdateCourse extends Component {
                                         name="estimatedTime"
                                         type="text"
                                         className="course--time--input"
-                                        defaultValue={this.state.estimatedTime}
+                                        defaultValue={estimatedTime}
                                         onChange={this.change}
                                         placeholder="Hours" />
                             </div>
@@ -106,7 +104,7 @@ class UpdateCourse extends Component {
                               <textarea id="materialsNeeded"
                                         name="materialsNeeded"
                                         className=""
-                                        defaultValue={this.state.materialsNeeded}
+                                        defaultValue={materialsNeeded}
                                         onChange={this.change} ></textarea>
                             </div>
                           </li>
@@ -120,6 +118,7 @@ class UpdateCourse extends Component {
     );
   }
 
+//handles any changes to state
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -131,20 +130,15 @@ class UpdateCourse extends Component {
     });
   }
 
+//handles submit, makes the PUT /courses/:id api call and handles the response/errors
   submit = () => {
 
     const { context } = this.props;
     const authUser = context.authenticatedUser.username;
-    const authUserPW = context.authenticatedUserPW;
-    //const userId = context.authenticatedUserId;
-    const authUserId = context.authenticatedUserId;
-    //const { context } = this.props;
-    //const authUserId = context.authenticatedUserId;
+    const authUserPW = context.authenticatedUser.password;
+    const authUserId = context.authenticatedUser.id;
+
     const { userId } = this.state;
-    if(authUserId !== userId){
-      console.log(`authUserId: ${authUserId}, userId: ${userId}`);
-      this.props.history.push('/forbidden');
-    }
 
     const {
       id,
@@ -167,17 +161,24 @@ class UpdateCourse extends Component {
       .then( errors => {
          if (errors.length) {
            this.setState({ errors });
-         } else {
-              this.props.history.push(`/courses/${id}`);
+         }
+         else {
+            this.props.history.push(`/courses/${id}`);
          }
        })
       .catch( err => { // handle rejected promises
+        if(authUserId !== userId){
+          this.props.history.push('/forbidden');
+        }
+        else {
           this.props.history.push('/error');
+        }
      });
   }
 
+//handles cancel
   cancel = () => {
-    this.props.history.push('/');
+    this.props.history.push(`/courses/${this.state.id}`);
   }
 }
 

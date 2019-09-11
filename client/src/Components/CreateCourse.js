@@ -102,6 +102,7 @@ class CreateCourse extends Component {
     );
   }
 
+//change handler for state updates
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -113,11 +114,13 @@ class CreateCourse extends Component {
     });
   }
 
+//submit handler- makes the POST /courses call and handles the response
   submit = () => {
     const { context } = this.props;
     const authUser = context.authenticatedUser.username;
     const authUserPW = context.authenticatedUserPW;
     const userId = context.authenticatedUserId;
+    
     const {
       title,
       description,
@@ -146,6 +149,7 @@ class CreateCourse extends Component {
      });
   }
 
+//cancel functionality returns to homepage
   cancel = () => {
     this.props.history.push('/');
   }

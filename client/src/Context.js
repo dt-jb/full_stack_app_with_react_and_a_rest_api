@@ -16,12 +16,10 @@ export class Provider extends Component {
   }
 
   render() {
-    const { authenticatedUser, authenticatedUserPW, authenticatedUserId } = this.state;
+    const { authenticatedUser/*, authenticatedUserPW, authenticatedUserId */} = this.state;
 
     const value = {
       authenticatedUser,
-      authenticatedUserPW,
-      authenticatedUserId,
       data: this.data,
       actions: {
         signIn: this.signIn,
@@ -40,11 +38,15 @@ export class Provider extends Component {
   signIn = async (emailAddress, password) => {
     const user = await this.data.getUser(emailAddress, password);
     if (user !== null) {
+      //user.password = password;
       this.setState(() => {
         return {
+          authenticatedUser: user
+          /*
           authenticatedUser: user,
           authenticatedUserPW: password,
           authenticatedUserId: user.id
+          */
         };
       });
       // Set cookie

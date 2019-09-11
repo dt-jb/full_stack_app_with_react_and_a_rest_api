@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-//import Course from './Course';
 
 class Courses extends Component {
   constructor(){
@@ -11,6 +10,7 @@ class Courses extends Component {
     };
   }
 
+//loads initial courses
   componentDidMount(){
     this.getCourses();
   }
@@ -29,11 +29,10 @@ class Courses extends Component {
   render(){
 
     const results = this.state.courses;
-    //console.log(results);
     let courses;
 
+//maps over the courses in the database to display them all
     if(results.length > 0) {
-      //courses = results.map( course =>  <Course data={course.title} key={course.id} />);
       courses = results.map( course => {
         return  <React.Fragment key={course.id}>
             <div className="grid-33">
@@ -44,9 +43,6 @@ class Courses extends Component {
             </div>
           </React.Fragment>
       });
-
-    } else {
-      //console.log("Sorry, nothing is here dude");
     }
 
     return (

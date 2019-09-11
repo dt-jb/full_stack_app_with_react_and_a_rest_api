@@ -51,6 +51,7 @@ export default class UserSignIn extends Component {
     );
   }
 
+//handles state change
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -62,20 +63,28 @@ export default class UserSignIn extends Component {
     });
   }
 
+//handles submit functionality
   submit = () => {
     const { context } = this.props;
-    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const { from } = this.props.location.state || { from: { pathname: this.props.history.goBack() } };
     const { emailAddress, password } = this.state;
 
     context.actions.signIn(emailAddress, password)
       .then( user => {
+        /*if (user !== null) {
+          this.props.history.push(from);
+        } else {
+          this.setState(() => {
+            return { errors: [ 'Sign-in was unsuccessful' ] };
+          });
+        }
+        */
         if (user === null) {
           this.setState(() => {
             return { errors: [ 'Sign-in was unsuccessful' ] };
           });
         } else {
-           this.props.history.push('/');
-           //console.log(`Welcome, ${user}!`);
+          this.props.history.push(from);
         }
       })
       .catch( err => {
@@ -84,6 +93,7 @@ export default class UserSignIn extends Component {
       })
   }
 
+//handles cancel
   cancel = () => {
     this.props.history.push('/');
   }

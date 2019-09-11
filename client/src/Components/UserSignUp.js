@@ -83,6 +83,7 @@ export default class UserSignUp extends Component {
     );
   }
 
+//handles state change
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -94,6 +95,7 @@ export default class UserSignUp extends Component {
     });
   }
 
+//handles submit, POST /users api call and handles response accordingly
   submit = () => {
     const { context } = this.props;
 
@@ -125,11 +127,11 @@ export default class UserSignUp extends Component {
        }
      })
      .catch( err => { // handle rejected promises
-       console.log(err);
        this.props.history.push('/error');
      });
   }
 
+//handles cancel
   cancel = () => {
     this.props.history.push('/');
   }

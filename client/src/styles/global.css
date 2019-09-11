@@ -208,6 +208,7 @@ body {
 /* line 13, ../sass/global.sass */
 .header {
   background: #57496e;
+  /*background: #6397eb;*/
   padding: 20px 0;
   margin-bottom: 30px;
 }
@@ -339,7 +340,7 @@ p {
 
 /* line 102, ../sass/global.sass */
 .course--module {
-  background: #7c689b;
+  background: /*#6397eb*/#7c689b;
   border-radius: 8px;
   padding: 30px;
   margin-bottom: 30px;
@@ -708,7 +709,7 @@ input:focus {
 .button-secondary {
   color: #7c689b;
   background: none;
-  box-shadow: 0 0 0 2px #7c689b inset;
+  box-shadow: 0 0 0 2px /*#6397eb*/#7c689b inset;
   -webkit-transition: box-shadow 0.2s, color 0.2s;
   -moz-transition: box-shadow 0.2s, color 0.2s;
   -ms-transition: box-shadow 0.2s, color 0.2s;

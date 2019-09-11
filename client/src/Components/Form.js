@@ -9,11 +9,13 @@ export default (props) => {
     elements,
   } = props;
 
+//submit handler
   function handleSubmit(event) {
     event.preventDefault();
     submit();
   }
 
+//handles cancel
   function handleCancel(event) {
     event.preventDefault();
     cancel();
@@ -33,6 +35,7 @@ export default (props) => {
   );
 }
 
+//renders any errors with the form, validation
 function ErrorsDisplay({ errors }) {
   let errorsDisplay = null;
 
