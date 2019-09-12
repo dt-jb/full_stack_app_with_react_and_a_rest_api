@@ -42,16 +42,10 @@ export class Provider extends Component {
       this.setState(() => {
         return {
           authenticatedUser: user
-          /*
-          authenticatedUser: user,
-          authenticatedUserPW: password,
-          authenticatedUserId: user.id
-          */
         };
       });
       // Set cookie
       Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 });
-      //Cookies.set('authenticatedUserPW', JSON.stringify(password), { expires: 1 });
     }
     return user;
   }

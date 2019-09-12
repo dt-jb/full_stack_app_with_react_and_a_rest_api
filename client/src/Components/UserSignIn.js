@@ -66,7 +66,7 @@ export default class UserSignIn extends Component {
 //handles submit functionality
   submit = () => {
     const { context } = this.props;
-    const { from } = this.props.location.state || { from: { pathname: this.props.history.goBack() } };
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
     const { emailAddress, password } = this.state;
 
     context.actions.signIn(emailAddress, password)
@@ -74,18 +74,11 @@ export default class UserSignIn extends Component {
         if (user !== null) {
           this.props.history.push(from);
         } else {
+          //this.setState({errors});
           this.setState(() => {
             return { errors: [ 'Sign-in was unsuccessful' ] };
           });
         }
-        /*
-        if (user === null) {
-          this.setState(() => {
-            return { errors: [ 'Sign-in was unsuccessful' ] };
-          });
-        } else {
-          this.props.history.push(from);
-        }*/
       })
       .catch( err => {
         if(err.response.status === 400){
