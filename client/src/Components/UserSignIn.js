@@ -71,26 +71,31 @@ export default class UserSignIn extends Component {
 
     context.actions.signIn(emailAddress, password)
       .then( user => {
-        /*if (user !== null) {
+        if (user !== null) {
           this.props.history.push(from);
         } else {
           this.setState(() => {
             return { errors: [ 'Sign-in was unsuccessful' ] };
           });
         }
-        */
+        /*
         if (user === null) {
           this.setState(() => {
             return { errors: [ 'Sign-in was unsuccessful' ] };
           });
         } else {
           this.props.history.push(from);
-        }
+        }*/
       })
       .catch( err => {
-        console.log(err);
-        this.props.history.push('/error');
-      })
+        if(err.response.status === 400){
+          return err.response.data.message;
+        } else if(err.response.status === 401) {
+          return err.response.data.message;
+        } else {
+          this.props.history.push('/error');
+        }
+      });
   }
 
 //handles cancel
