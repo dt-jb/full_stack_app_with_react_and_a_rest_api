@@ -21,6 +21,10 @@ class CreateCourse extends Component {
       errors,
     } = this.state;
 
+    const { context } = this.props;
+    const authUserFirstName = context.authenticatedUser.firstName;
+    const authUserLastName = context.authenticatedUser.lastName;
+
     return (
       <div className="bounds course--detail">
         <h1>Create Course</h1>
@@ -43,7 +47,7 @@ class CreateCourse extends Component {
                                  onChange={this.change}
                                  placeholder="Course title..." />
                           </div>
-                        <p>By Joe Smith</p>
+                        <p>By {authUserFirstName} {authUserLastName}</p>
                       </div>
                       <div className="course--description">
                         <div><textarea id="description"

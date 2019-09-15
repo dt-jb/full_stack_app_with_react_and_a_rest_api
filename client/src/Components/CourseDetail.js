@@ -63,9 +63,6 @@ class CourseDetail extends Component {
     else {
       authUserId = 0;
     }
-    console.log(`authUserId: ${authUserId}`);
-    console.log(firstName, lastName);
-    //const errors = [];
 
     return (
       <div>

@@ -148,7 +148,6 @@ class UpdateCourse extends Component {
 
 //handles submit, makes the PUT /courses/:id api call and handles the response/errors
   submit = (event) => {
-    //event.preventDefault();
     const { context } = this.props;
     const authUser = context.authenticatedUser.username;
     const authUserPW = context.authenticatedUser.password;
@@ -174,8 +173,6 @@ class UpdateCourse extends Component {
     };
 
     if(title === '' || description === ''){
-      //event.preventDefault();
-      console.log('this code is executing');
       this.setState({
         errors: ["Title and description are required."]
       });
