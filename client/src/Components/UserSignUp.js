@@ -115,20 +115,30 @@ export default class UserSignUp extends Component {
       confirmPassword,
     };
 
-    context.data.createUser(user)
-      .then( errors => {
-       if (errors.length) {
-         this.setState({ errors });
-       } else {
-          context.actions.signIn(emailAddress, password)
-          .then(() => {
-            this.props.history.push('/')
-          });
-       }
-     })
-     .catch( err => { // handle rejected promises
-       this.props.history.push('/error');
-     });
+    if( password === '' ){
+      this.setState({
+        errors: ["Please create a password."]
+      });
+    } else if ( password !== confirmPassword ) {
+      this.setState({
+        errors: ["Password and confirm password must be the same."]
+      });  
+    } else {
+      context.data.createUser(user)
+        .then( errors => {
+         if (errors.length) {
+           this.setState({ errors });
+         } else {
+            context.actions.signIn(emailAddress, password)
+            .then(() => {
+              this.props.history.push('/')
+            });
+         }
+       })
+       .catch( err => { // handle rejected promises
+         this.props.history.push('/error');
+       });
+    }
   }
 
 //handles cancel

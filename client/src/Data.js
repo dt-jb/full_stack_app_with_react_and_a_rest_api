@@ -69,6 +69,13 @@ export default class Data {
         return errors;
       });
     }
+    else if (response.status === 401) {
+      return response.json().then(data => {
+        const errors = [];
+        data.errors.map((error) => errors.push(error.message));
+        return errors;
+      });
+    }
     else {
       throw new Error();
     }

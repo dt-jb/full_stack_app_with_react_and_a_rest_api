@@ -12,6 +12,8 @@ class CourseDetail extends Component {
     estimatedTime: '',
     materialsNeeded: '',
     userId: '',
+    firstName: '',
+    lastName: '',
     errors: [],
   };
 
@@ -30,6 +32,8 @@ class CourseDetail extends Component {
           estimatedTime: response.data.estimatedTime,
           materialsNeeded: response.data.materialsNeeded,
           userId: response.data.userId,
+          firstName: response.data.user.firstName,
+          lastName: response.data.user.lastName,
         });
       })
       .catch(error => {
@@ -45,7 +49,9 @@ class CourseDetail extends Component {
       description,
       estimatedTime,
       materialsNeeded,
-      userId,
+      //userId,
+      firstName,
+      lastName,
     } = this.state;
 
     const { context } = this.props;
@@ -58,6 +64,7 @@ class CourseDetail extends Component {
       authUserId = 0;
     }
     console.log(`authUserId: ${authUserId}`);
+    console.log(firstName, lastName);
     //const errors = [];
 
     return (
@@ -80,7 +87,7 @@ class CourseDetail extends Component {
             <div className="course--header">
               <h4 className="course--label">Course</h4>
               <h3 className="course--title">{title}</h3>
-              <p>By User #{`${userId}`}</p>
+              <p>By {firstName} {lastName}</p>
             </div>
             <div className="course--description">
               <ReactMarkdown source={description} />

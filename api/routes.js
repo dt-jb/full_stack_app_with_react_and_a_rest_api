@@ -52,8 +52,8 @@ const authenticateUser = async (req, res, next) => {
 router.get('/users', authenticateUser, (req, res) => {
   //console.log(req.currentUser)
   res.status(200).json({
-    name: req.currentUser.firstName,
-    //lastName: req.currentUser.firstName
+    firstName: req.currentUser.firstName,
+    lastName: req.currentUser.lastName,
     username: req.currentUser.emailAddress,
     id: req.currentUser.id
   });
@@ -98,6 +98,11 @@ router.get('/courses', (req, res) => {
 //GET /api/courses/:id 200 - Returns a the course (including the user that owns the course) for the provided course ID
 router.get('/courses/:id', (req, res) => {
   Course.findByPk(req.params.id, {
+    include: [{// Notice `include` takes an ARRAY
+      model: User,
+      as: 'user',
+      attributes: ['firstName', 'lastName']
+    }],
     attributes: { exclude: ['createdAt', 'updatedAt'] }
   }).then(courses => {
     if(courses){
@@ -107,6 +112,12 @@ router.get('/courses/:id', (req, res) => {
     }
   });
 });
+/*Course.findByPk(id, {
+  include: [{// Notice `include` takes an ARRAY
+    model: User,
+    attributes: ['firstName', 'lastName']
+  }]
+})*/
 
 //POST /api/courses 201 - Creates a course, sets the Location header to the URI for the course, and returns no content
 router.post('/courses', authenticateUser, (req, res) => {

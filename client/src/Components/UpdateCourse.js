@@ -31,9 +31,21 @@ class UpdateCourse extends Component {
           materialsNeeded: response.data.materialsNeeded,
           userId: response.data.userId,
         });
+        const { context } = this.props;
+        const authUserId = context.authenticatedUser.id;
+        if(this.state.userId !== authUserId){
+          throw Error;
+          //this.props.history.push('/forbidden');
+        }
       })
       .catch(error => {
-        this.props.history.push('/notfound');
+        const { context } = this.props;
+        const authUserId = context.authenticatedUser.id;
+        if(this.state.userId !== authUserId){
+          this.props.history.push('/forbidden');
+        } else {
+          this.props.history.push('/notfound');
+        }
       });
   }
 
@@ -44,9 +56,12 @@ class UpdateCourse extends Component {
       description,
       estimatedTime,
       materialsNeeded,
+      errors,
     } = this.state;
 
-    const errors = [];
+    const { context } = this.props;
+    const authUserFirstName = context.authenticatedUser.firstName;
+    const authUserLastName = context.authenticatedUser.lastName;
 
     return (
       <div className="bounds course--detail">
@@ -65,11 +80,11 @@ class UpdateCourse extends Component {
                           <input id="title"
                                  name="title" type="text"
                                  className="input-title course--title--input"
-                                 defaultValue={title}
+                                 value={title}
                                  onChange={this.change}
                                  placeholder="Course title..." />
                         </div>
-                        <p>By Joe Smith</p>
+                        <p>By {authUserFirstName} {authUserLastName}</p>
                       </div>
                       <div className="course--description">
                         <div>
@@ -77,9 +92,9 @@ class UpdateCourse extends Component {
                                     name="description"
                                     type="text"
                                     className=""
-                                    placeholder="Course description..."
-                                    defaultValue={description}
-                                    onChange={this.change}></textarea>
+                                    placeholder={description}
+                                    onChange={this.change}
+                                    value={description}></textarea>
                         </div>
                       </div>
                     </div>
@@ -104,8 +119,9 @@ class UpdateCourse extends Component {
                               <textarea id="materialsNeeded"
                                         name="materialsNeeded"
                                         className=""
-                                        defaultValue={materialsNeeded}
-                                        onChange={this.change} ></textarea>
+                                        onChange={this.change}
+                                        placeholder={materialsNeeded}
+                                        value={materialsNeeded} ></textarea>
                             </div>
                           </li>
                         </ul>
@@ -131,8 +147,8 @@ class UpdateCourse extends Component {
   }
 
 //handles submit, makes the PUT /courses/:id api call and handles the response/errors
-  submit = () => {
-
+  submit = (event) => {
+    //event.preventDefault();
     const { context } = this.props;
     const authUser = context.authenticatedUser.username;
     const authUserPW = context.authenticatedUser.password;
@@ -157,23 +173,31 @@ class UpdateCourse extends Component {
       userId,
     };
 
-    context.data.updateCourse(updatedCourse, id, authUser, authUserPW)
-      .then( errors => {
-         if (errors.length) {
-           this.setState({ errors });
-         }
-         else {
-            this.props.history.push(`/courses/${id}`);
-         }
-       })
-      .catch( err => { // handle rejected promises
-        if(authUserId !== userId){
-          this.props.history.push('/forbidden');
-        }
-        else {
-          this.props.history.push('/error');
-        }
-     });
+    if(title === '' || description === ''){
+      //event.preventDefault();
+      console.log('this code is executing');
+      this.setState({
+        errors: ["Title and description are required."]
+      });
+    } else {
+      context.data.updateCourse(updatedCourse, id, authUser, authUserPW)
+        .then( errors => {
+           if (errors.length) {
+             this.setState({ errors });
+           }
+           else {
+              this.props.history.push(`/courses/${id}`);
+           }
+         })
+        .catch( err => { // handle rejected promises
+          if(authUserId !== userId){
+            this.props.history.push('/forbidden');
+          }
+          else {
+            this.props.history.push('/error');
+          }
+       });
+   }
   }
 
 //handles cancel

@@ -25,15 +25,6 @@ class CreateCourse extends Component {
       <div className="bounds course--detail">
         <h1>Create Course</h1>
         <div>
-          <div>
-            <h2 className="validation--errors--label">Validation errors</h2>
-            <div className="validation-errors">
-              <ul>
-                <li>Please provide a value for "Title"</li>
-                <li>Please provide a value for "Description"</li>
-              </ul>
-            </div>
-          </div>
           <Form cancel={this.cancel}
                 errors={errors}
                 submit={this.submit}
@@ -118,9 +109,9 @@ class CreateCourse extends Component {
   submit = () => {
     const { context } = this.props;
     const authUser = context.authenticatedUser.username;
-    const authUserPW = context.authenticatedUserPW;
-    const userId = context.authenticatedUserId;
-    
+    const authUserPW = context.authenticatedUser.password;
+    const userId = context.authenticatedUser.id;
+
     const {
       title,
       description,
