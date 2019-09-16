@@ -34,18 +34,33 @@ class UpdateCourse extends Component {
         const { context } = this.props;
         const authUserId = context.authenticatedUser.id;
         if(this.state.userId !== authUserId){
-          throw Error;
-          //this.props.history.push('/forbidden');
+          //throw Error;
+          this.props.history.push('/forbidden');
         }
       })
       .catch(error => {
-        const { context } = this.props;
-        const authUserId = context.authenticatedUser.id;
-        if(this.state.userId !== authUserId){
+        //const { context } = this.props;
+        //const authUserId = context.authenticatedUser.id;
+        if(error.response){
+          if(error.response.status === 404){
+            this.props.history.push('/notfound');
+          } /*else if (this.state.userId !== authUserId){
+            console.log(error.response);
+            this.props.history.push('/forbidden');
+          } */else {
+            console.log(error.response);
+            this.props.history.push('/error');
+          }
+        }
+        else {
+          console.log(error.response);
+          this.props.history.push('/error');
+        }
+        /*if(this.state.userId !== authUserId){
           this.props.history.push('/forbidden');
         } else {
           this.props.history.push('/notfound');
-        }
+        }*/
       });
   }
 
@@ -187,12 +202,22 @@ class UpdateCourse extends Component {
            }
          })
         .catch( err => { // handle rejected promises
-          if(authUserId !== userId){
+          if(err.response){
+            if(err.response === 404){
+              this.props.history.push('/notfound');
+            } else if(authUserId !== userId){
+              this.props.history.push('/forbidden');
+            }
+            else {
+              this.props.history.push('/error');
+            }
+          }
+          /*if(authUserId !== userId){
             this.props.history.push('/forbidden');
           }
           else {
             this.props.history.push('/error');
-          }
+          }*/
        });
    }
   }
